@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  jupyter:
+    image: jupyter/pyspark-notebook:latest
+    volumes:
+      - project-scripts-volume:/home/jovyan/work
+    command: jupyter notebook --NotebookApp.token='${TOKEN}' --allow-root
+    ports:
+      - 8888:8888
+    environment:
+      - GRANT_SUDO="yes"
+    user:
+      "root"
+volumes:
+  project-scripts-volume:
+    external: true
+
+networks:
+  default:
+    external:
+      name: spark-network

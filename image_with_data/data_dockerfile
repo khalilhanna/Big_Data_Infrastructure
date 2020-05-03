@@ -1,0 +1,7 @@
+FROM busybox
+RUN [ "mkdir" , "/tmp_data" ]
+RUN [ "wget" , "-P" , "/tmp_data" , "http://donnees.ville.montreal.qc.ca/dataset/cd722e22-376b-4b89-9bc2-7c7ab317ef6b/resource/05deae93-d9fc-4acb-9779-e0942b5e962f/download/accidents_2012_2018.zip" ]
+RUN [ "mkdir" , "/volume" ]
+RUN [ "mkdir" , "/volume/data" ]
+RUN [ "mv" , "/tmp_data/accidents_2012_2018.zip" , "/volume/data/accidents_2012_2018.zip"]
+VOLUME /volume

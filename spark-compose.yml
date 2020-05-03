@@ -1,0 +1,83 @@
+# version: '3.5'
+version: '3'
+
+services:
+  # Spark master
+  master:
+    image: mjhea0/spark:2.4.1
+    command: bin/spark-class org.apache.spark.deploy.master.Master -h master
+    hostname: master
+    environment:
+      MASTER: spark://master:7077
+      SPARK_CONF_DIR: /conf
+      SPARK_PUBLIC_DNS: ${EXTERNAL_IP}
+    ports:
+      - 4040:4040
+      - 6066:6066
+      - 7077:7077
+      - 8080:8080
+
+  # Spark worker
+  worker:
+    image: mjhea0/spark:2.4.1
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    hostname: worker
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    environment:
+      SPARK_CONF_DIR: /conf
+      SPARK_WORKER_CORES: 1
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_PUBLIC_DNS: ${EXTERNAL_IP}
+    depends_on:
+      - master
+    ports:
+      - 8081:8081
+    volumes:
+      - project-scripts-volume:/volume
+
+  # Spark hadoop File System
+  hadoop:
+    image: harisekhon/hadoop:2.8
+    hostname: hadoop
+    ports:
+      #- 8020:8020
+      - 8042:8042
+      - 8088:8088
+      #- 9000:9000
+      #- 10020:10020
+      - 19888:19888
+      - 50010:50010
+      - 50020:50020
+      - 50070:50070
+      - 50075:50075
+      - 50090:50090
+      
+  # Mongo DB
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${user_mongo}
+      MONGO_INITDB_ROOT_PASSWORD: ${pass_mongo}
+
+  # Mongo Express
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8181:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${user_mongo}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${pass_mongo}
+
+networks:
+  default:
+    external:
+      name: spark-network
+
+volumes:
+  project-scripts-volume:
+    external: true
