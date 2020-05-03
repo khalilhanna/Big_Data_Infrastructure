@@ -1,17 +1,5 @@
-# 2019-fall-group-project-ricardo-jacob-khalil
-
-2019-fall-group-project-Ricardo-Jacob-Khalil created by GitHub Classroom
-
-
-## Project Members
-  - Jacob Jablonski
-  - Khalil Hanna
-  - Ricardo Rocha
-
-  
-## Communication Platform
-  - [Slack](https://app.slack.com/client/THRKMGT55/GPHGQ9SH0)
-  
+# Big Data Infrastructure
+ 
 ## Contents
 - [Collisions Routieres Dataset](#Collisions-Routieres-Dataset)
 - [Downloading the data](#Fetching-the-data-and-download-it-into-volume-using-an-image)
